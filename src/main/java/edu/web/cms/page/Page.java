@@ -2,10 +2,7 @@ package edu.web.cms.page;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 import java.util.Date;
 
@@ -31,12 +28,18 @@ public class Page {
     private String shortCaptionEn;
     private String shortCaptionRu;
 
+    @Lob
     private String introUa;
+    @Lob
     private String introEn;
+    @Lob
     private String introRu;
 
+    @Lob
     private String textUa;
+    @Lob
     private String textEn;
+    @Lob
     private String textRu;
 
     private String imageURL;
@@ -92,6 +95,15 @@ public class Page {
 
     public Language getLang() {
         return lang;
+    }
+
+    public String getLangAsString() {
+        switch(lang) {
+            case UKRAINIAN: return "ua";
+            case ENGLISH: return "en";
+            case RUSSIAN: return "ru";
+            default: return "en";
+        }
     }
 
     public void setLang(Language lang) {

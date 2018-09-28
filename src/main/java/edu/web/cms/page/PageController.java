@@ -56,7 +56,7 @@ public class PageController {
         return "layout";
     }
 
-    @RequestMapping("/{code:^(?![css|images]).+}/{lang}")
+    @RequestMapping("/{code:^(?!resources).+}/{lang}")
     public String getPage(@PathVariable String code,
                                      @PathVariable String lang,
                                      Map<String, Object> model){

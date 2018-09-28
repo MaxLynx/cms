@@ -3,26 +3,38 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}"/>
-    <link rel="icon" th:href="@{/images/logo.png}">
+    <link rel="stylesheet" type="text/css" th:href="@{/resources/css/styles.css}"/>
+    <link rel="icon" th:href="@{/resources/images/logo.png}">
 
     <title th:text="${page.getCaption()}"></title>
 </head>
 <body>
     <div class="header">
-        <img th:src="@{/images/logo.png}" alt="Site logo"/>
+        <img th:src="@{/resources/images/logo.png}" alt="Site logo"/>
         <h2 th:text="${page.getCaption()}"> </h2>
     </div>
 
     <div class="topnav">
-        <a th:href="@{/{code}(code=${sitePage.getCode()})}"
+        <a th:href="@{/{code}/{lang}(code=${sitePage.getCode()}, lang=${sitePage.getLangAsString()})}"
            th:classappend="${page.getCode().equals(sitePage.getCode())} ? active : ''"
            th:each="sitePage : ${pages}" th:text="${sitePage.getCaption()}"></a>
+        <a th:href="@{/{code}/en(code=${page.getCode()})}"
+           th:classappend="${page.getLangAsString().equals('en')} ? active : ''">EN</a>
+        <a th:href="@{/{code}/ua(code=${page.getCode()})}"
+           th:classappend="${page.getLangAsString().equals('ua')} ? active : ''">UA</a>
+        <a th:href="@{/{code}/ru(code=${page.getCode()})}"
+           th:classappend="${page.getLangAsString().equals('ru')} ? active : ''">RU</a>
     </div>
 
     <div class="row">
         <div class="column side"></div>
-        <div class="column middle" th:text="${page.getText()}"></div>
+        <div class="column middle">
+            <em>
+                <div th:text="${page.getIntro()}"></div>
+            </em>
+            <img th:src="@{/resources/images/{image}(image=${page.getImageURL()})}" alt="Page specific image"/>
+            <div th:text="${page.getText()}"></div>
+        </div>
         <div class="column side"></div>
     </div>
 
