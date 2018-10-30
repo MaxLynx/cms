@@ -55,6 +55,31 @@ body {
    flex: 1;
    background-color: #ccc;
 }
+.column.side a {
+    display: none;
+    text-decoration: none;
+    color: blue;
+    text-align: center;
+}
+.column.side a:hover {
+    color: yellow;
+}
+.column.side .visible {
+    display: block;
+}
+.column.middle a img {
+    display: none;
+    text-align: center;
+    height: 16vw;
+    width: 24vw;
+}
+.column.middle a img:hover {
+    filter: hue-rotate(180deg);
+    -webkit-filter: hue-rotate(180deg);
+}
+.column.middle .visible {
+    display: inline;
+}
 .column.middle {
     -webkit-flex: 4;
     -ms-flex: 4;

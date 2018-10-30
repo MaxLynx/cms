@@ -1,16 +1,23 @@
 package edu.web.cms.page;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
 
+import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Page of website
  */
 @Entity
-public class Page {
+public class Page implements Serializable {
+
+    @Transient
+    public static String TOP_PARENT_CODE = "TOP";
 
     @Id
     @GeneratedValue(generator="system-uuid")
@@ -47,8 +54,27 @@ public class Page {
     private Date creationDate;
     private Date lastUpdateDate;
 
+    @NotFound(action = NotFoundAction.IGNORE)
+    @ManyToOne
+    @JoinColumn(name = "parentCode", referencedColumnName="code")
+    private Page parent;
+
+    @NotFound(action = NotFoundAction.IGNORE)
+    @OneToOne
+    @JoinColumn(name = "aliasOf", referencedColumnName="code")
+    private Page original;
+
+    @OneToMany(mappedBy = "parent", fetch = FetchType.EAGER)
+    private List<Page> childrenPages;
+
+    private int orderPosition; // position for children manual ordering
+    private String orderType; // which field to be used in order by
+    private ContainerType containerType;
+
+
     public Page(){
         this.lang = Language.ENGLISH;
+        this.containerType = ContainerType.NONE;
     }
 
     public Page(String id, String code, String captionUa,
@@ -56,7 +82,10 @@ public class Page {
                 String shortCaptionEn, String shortCaptionRu, String introUa,
                 String introEn, String introRu,
                 String textUa, String textEn, String textRu, String imageURL,
-                Date creationDate, Date lastUpdateDate) {
+                Date creationDate, Date lastUpdateDate,
+                Page parent, List<Page> childrenPages, Page original,
+                int orderPosition, String orderType,
+                ContainerType containerType) {
         this.id = id;
         this.code = code;
         this.lang = Language.ENGLISH;
@@ -75,6 +104,12 @@ public class Page {
         this.imageURL = imageURL;
         this.creationDate = creationDate;
         this.lastUpdateDate = lastUpdateDate;
+        this.parent = parent;
+        this.childrenPages = childrenPages;
+        this.original = original;
+        this.orderPosition = orderPosition;
+        this.orderType = orderType;
+        this.containerType = containerType;
     }
 
     public String getId() {
@@ -273,5 +308,53 @@ public class Page {
 
     public void setLastUpdateDate(Date lastUpdateDate) {
         this.lastUpdateDate = lastUpdateDate;
+    }
+
+    public Page getParent() {
+        return parent;
+    }
+
+    public void setParent(Page parent) {
+        this.parent = parent;
+    }
+
+    public List<Page> getChildrenPages() {
+        return childrenPages;
+    }
+
+    public void setChildrenPages(List<Page> childrenPages) {
+        this.childrenPages = childrenPages;
+    }
+
+    public Page getOriginal() {
+        return original;
+    }
+
+    public void setOriginal(Page original) {
+        this.original = original;
+    }
+
+    public int getOrderPosition() {
+        return orderPosition;
+    }
+
+    public void setOrderPosition(int orderPosition) {
+        this.orderPosition = orderPosition;
+    }
+
+    public String getOrderType() {
+        return orderType;
+    }
+
+    public void setOrderType(String orderType) {
+        this.orderType = orderType;
+    }
+
+    public ContainerType getContainerType() {
+        return containerType;
+    }
+
+    public void setContainerType(ContainerType containerType) {
+        this.containerType = containerType;
     }
 }

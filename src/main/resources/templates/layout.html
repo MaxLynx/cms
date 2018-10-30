@@ -27,13 +27,29 @@
     </div>
 
     <div class="row">
-        <div class="column side"></div>
+        <div class="column side">
+            <div>
+                <a th:href="@{/{code}/{lang}(code=${childPage.getCode()}, lang=${childPage.getLangAsString()})}"
+                   th:each="childPage : ${childPages}" th:text="${childPage.getCaption()}"
+                   th:classappend="${page.getContainerType() != T(edu.web.cms.page.ContainerType).SIDE} ? '' : 'visible'">
+                </a>
+            </div>
+        </div>
         <div class="column middle">
             <em>
                 <div th:text="${page.getIntro()}"></div>
             </em>
             <img th:src="@{/resources/images/{image}(image=${page.getImageURL()})}" alt="Page specific image"/>
             <div th:text="${page.getText()}"></div>
+                <a th:href="@{/{code}/{lang}(code=${childPage.getCode()}, lang=${childPage.getLangAsString()})}"
+                   th:each="childPage : ${childPages}">
+                    <img border="0"
+                         th:title="${childPage.getCaption() + ': ' + childPage.getIntro() + '...'}"
+                         th:classappend="${page.getContainerType() != T(edu.web.cms.page.ContainerType).TILES} ? '' : 'visible'"
+                         th:src="@{/resources/images/{image}(image=${childPage.getImageURL()})}"
+                    alt="Category image"/>
+                </a>
+
         </div>
         <div class="column side"></div>
     </div>
