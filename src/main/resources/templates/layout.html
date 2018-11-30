@@ -31,7 +31,9 @@
             <div>
                 <a th:href="@{/{code}/{lang}(code=${childPage.getCode()}, lang=${childPage.getLangAsString()})}"
                    th:each="childPage : ${childPages}" th:text="${childPage.getCaption()}"
-                   th:classappend="${page.getContainerType() != T(edu.web.cms.page.ContainerType).SIDE} ? '' : 'visible'">
+                   th:classappend=
+                           "${page.getContainerType().equals(T(edu.web.cms.page.ContainerType).SIDE) ? 'visible' : 'invisible'}"
+                >
                 </a>
             </div>
         </div>
@@ -45,7 +47,8 @@
                    th:each="childPage : ${childPages}">
                     <img border="0"
                          th:title="${childPage.getCaption() + ': ' + childPage.getIntro() + '...'}"
-                         th:classappend="${page.getContainerType() != T(edu.web.cms.page.ContainerType).TILES} ? '' : 'visible'"
+                         th:classappend=
+                                 "${page.getContainerType().equals(T(edu.web.cms.page.ContainerType).TILES) ? 'visible' : 'invisible'}"
                          th:src="@{/resources/images/{image}(image=${childPage.getImageURL()})}"
                     alt="Category image"/>
                 </a>

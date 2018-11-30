@@ -1,0 +1,82 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/resources/css/styles.css}"/>
+    <link rel="icon" th:href="@{/resources/images/logo.png}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <title>Список контенту</title>
+</head>
+<body>
+    <div class="header">
+        <img th:src="@{/resources/images/logo.png}" alt="Site logo"/>
+        <h2>Список контенту</h2>
+    </div>
+
+    <div class="topnav">
+
+    </div>
+
+    <div class="row">
+        <div class="column side">
+
+        </div>
+        <div class="column middle index">
+            <div th:if="${objects.size() > 0 && objects.get(0).getParent() != null}">
+                <form action="/admin" id="returnForm">
+                    <input th:if="${objects.get(0).getParent().getParent() != null}"
+                            type="hidden" name="parentCode" th:value="${objects.get(0).getParent().getParent().getCode()}"/>
+                </form>
+                <button type="submit" form="returnForm">
+                    <i class="fa fa-arrow-left"></i>
+                </button>
+            </div>
+            <div th:each="object : ${objects}"
+                 th:if="${object.getOriginal() == null}">
+                <span   th:classappend="${object.isCategory()} ? category : ''"
+                        th:text="${object.getCaptionUa()}"> </span>
+                <form th:id="editForm__${object.getCode()}__"
+                        th:action="@{/admin/{code}/edit(code=${object.getCode()})}">
+                    <input  th:if="${parentCode != null}"
+                            type="hidden" name="parentCode" th:value="${parentCode}"/>
+                    <input  th:if="${parentCode == null}"
+                            type="hidden" name="parentCode" th:value="${''}"/>
+                </form>
+                <button type="submit" th:form="editForm__${object.getCode()}__">
+                    <i class="fa fa-edit"></i>
+                </button>
+                <form th:id="deleteForm__${object.getCode()}__"
+                      th:action="@{/admin/{code}(code=${object.getCode()})}" th:method="delete" >
+                </form>
+                    <button type="submit" th:form="deleteForm__${object.getCode()}__">
+                        <i class="fa fa-trash"></i>
+                    </button>
+                <span th:if="${object.isCategory()}">
+                    <form th:id="openCategoryForm__${object.getCode()}__"
+                          action="/admin" method="get" >
+                    <input type="hidden" name="parentCode" th:value="${object.getCode()}"/>
+                    </form>
+                    <button type="submit" th:form="openCategoryForm__${object.getCode()}__">
+                        <i class="fa fa-arrow-right"></i>
+                    </button>
+                </span>
+                <br>
+            </div>
+            <form action="/admin/create" id="addForm">
+                <input  th:if="${parentCode != null}"
+                        type="hidden" name="parentCode" th:value="${parentCode}"/>
+            </form>
+            <button type="submit" form="addForm">
+                <i class="fa fa-plus"></i>
+            </button>
+        </div>
+        <div class="column side"></div>
+    </div>
+
+    <div class="footer">
+        <p>&copy;2018 CMS Simple, Inc. - Minimalistic approach for exciting solutions</p>
+    </div>
+</body>
+</html>

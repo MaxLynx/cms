@@ -1,0 +1,129 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/resources/css/styles.css}"/>
+    <link rel="icon" th:href="@{/resources/images/logo.png}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <title>Форма заповнення контенту</title>
+</head>
+<body>
+    <div class="header">
+        <img th:src="@{/resources/images/logo.png}" alt="Site logo"/>
+        <h2>Форма заповнення контенту</h2>
+    </div>
+
+    <div class="topnav">
+
+    </div>
+
+    <div class="row">
+        <div class="column side">
+
+        </div>
+        <div class="column middle edit" th:object="${object}">
+            <span th:text="${'Код розділу'}"> </span>
+            <br>
+            <textarea th:name="${'Код розділу'}" form="submitForm"
+                      th:if="${object.getCode().equals('blank')}"
+                      th:text="${parentCode}"
+            >
+            </textarea>
+            <textarea th:name="${'Код розділу'}" form="updateForm"
+                      th:if="${!object.getCode().equals('blank')}"
+                      th:text="${parentCode}"
+            >
+            </textarea>
+            <br>
+            <div th:each="propertyPair : ${properties}">
+                <span th:text="${propertyPair.getKey()}"> </span>
+                <br>
+                <div th:if="${object.getCode().equals('blank')}">
+                <textarea th:name="${propertyPair.getKey()}" form="submitForm"
+                          th:if="${propertyPair.getValue()[2].equals('textarea')}"
+                          th:field="*{__${propertyPair.getValue()[1]}__}"
+                th:text="${propertyPair.getValue()[0]}"></textarea>
+                    <input type="file"
+                           th:if="${propertyPair.getValue()[2].equals('file')}"
+                           name="imgFile"
+                           form="submitForm"
+                    />
+                    <select th:name="${propertyPair.getKey()}" form="submitForm"
+                              th:if="${propertyPair.getValue()[2].equals('select')}"
+                              th:field="*{__${propertyPair.getValue()[1]}__}">
+                        <option
+                                th:value="${T(edu.web.cms.page.ContainerType).NONE}">
+                            Немає
+                        </option>
+                        <option
+                                th:value="${T(edu.web.cms.page.ContainerType).TILES}">
+                            Плитка
+                        </option>
+                        <option
+                                th:value="${T(edu.web.cms.page.ContainerType).SIDE}">
+                            Список
+                        </option>
+                    </select>
+                </div>
+                <div th:if="${!object.getCode().equals('blank')}">
+                <textarea th:name="${propertyPair.getKey()}" form="updateForm"
+                          th:if="${propertyPair.getValue()[2].equals('textarea')}"
+                          th:field="*{__${propertyPair.getValue()[1]}__}"
+                          th:text="${propertyPair.getValue()[0]}"></textarea>
+                    <input type="file"
+                           th:if="${propertyPair.getValue()[2].equals('file')}"
+                           name="imgFile"
+                           th:value="${propertyPair.getValue()[0]}"
+                           form="updateForm"
+                    />
+                    <select th:name="${propertyPair.getKey()}" form="updateForm"
+                            th:if="${propertyPair.getValue()[2].equals('select')}"
+                            th:field="*{__${propertyPair.getValue()[1]}__}">
+                        <option
+                                th:value="${T(edu.web.cms.page.ContainerType).NONE}">
+                            Немає
+                        </option>
+                        <option
+                                th:value="${T(edu.web.cms.page.ContainerType).TILES}">
+                            Плитка
+                        </option>
+                        <option
+                                th:value="${T(edu.web.cms.page.ContainerType).SIDE}">
+                            Список
+                        </option>
+                    </select>
+                </div>
+                <br>
+            </div>
+
+            <div th:if="${object.getCode().equals('blank')}">
+                <form id="submitForm" th:action="@{/admin/{parentCode}(parentCode=${parentCode})}"
+                      enctype="multipart/form-data"
+                      method="post">
+                </form>
+                <button type="submit" form="submitForm"> ЗБЕРЕГТИ </button>
+            </div>
+            <div th:if="${!object.getCode().equals('blank')}">
+                <form id="updateForm" th:action="@{/admin/{code}/{parentCode}
+                (code=${object.getCode()},
+                parentCode=${parentCode})}"
+                      enctype="multipart/form-data"
+                      th:method="put">
+                </form>
+                <button type="submit" form="updateForm"> ОНОВИТИ </button>
+                <form id="deleteForm" th:action="@{/admin/{code}(code=${object.getCode()})}"
+                      th:method="delete">
+                </form>
+                <button type="submit" form="deleteForm"> ВИДАЛИТИ </button>
+            </div>
+        </div>
+        <div class="column side"></div>
+    </div>
+
+    <div class="footer">
+        <p>&copy;2018 CMS Simple, Inc. - Minimalistic approach for exciting solutions</p>
+    </div>
+</body>
+</html>

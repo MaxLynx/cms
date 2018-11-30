@@ -77,6 +77,26 @@ body {
     filter: hue-rotate(180deg);
     -webkit-filter: hue-rotate(180deg);
 }
+.column.middle form {
+    display: inline;
+}
+.column.middle textarea {
+    width: 48vw;
+    height: 8vw;
+}
+.edit button {
+    height: 3vw;
+    width: 10vw;
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+}
+.column.middle .invisible {
+    display: none;
+}
 .column.middle .visible {
     display: inline;
 }
@@ -86,11 +106,24 @@ body {
     flex: 4;
     background-color: #bbb;
 }
+.column.middle.index {
+    font-size: 1.5em;
+    color: #873600;
+}
+
+.column.middle.index button {
+    height: 2vw;
+    width: 5vw;
+}
+.category {
+    text-decoration: underline;
+}
 .footer {
     background-color: #f1f1f1;
     padding: 10px;
     text-align: center;
 }
+
 @media (max-width: 600px) {
     .row {
       -webkit-flex-direction: column;

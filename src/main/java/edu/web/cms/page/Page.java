@@ -74,7 +74,34 @@ public class Page implements Serializable {
 
     public Page(){
         this.lang = Language.ENGLISH;
+        this.orderType = "OrderPosition";
         this.containerType = ContainerType.NONE;
+    }
+
+    public Page(String code){
+        this.lang = Language.ENGLISH;
+        this.orderType = "OrderPosition";
+        this.containerType = ContainerType.NONE;
+        this.code = code;
+    }
+
+    public Page(String id, String code, String captionUa,
+                String captionEn, String captionRu, String introUa,
+                String introEn, String introRu,
+                String textUa, String textEn, String textRu) {
+        this.id = id;
+        this.code = code;
+        this.lang = Language.ENGLISH;
+        this.captionUa = captionUa;
+        this.captionEn = captionEn;
+        this.captionRu = captionRu;
+        this.introUa = introUa;
+        this.introEn = introEn;
+        this.introRu = introRu;
+        this.textUa = textUa;
+        this.textEn = textEn;
+        this.textRu = textRu;
+        this.orderType = "OrderPosition";
     }
 
     public Page(String id, String code, String captionUa,
@@ -356,5 +383,9 @@ public class Page implements Serializable {
 
     public void setContainerType(ContainerType containerType) {
         this.containerType = containerType;
+    }
+
+    public boolean isCategory(){
+        return containerType.getValue() != 0;
     }
 }
